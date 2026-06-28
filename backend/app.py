@@ -1,4 +1,5 @@
 import os
+import socket
 from fastapi import FastAPI 
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
@@ -30,6 +31,12 @@ app.include_router(content_router)
 app.include_router(attach_router)
 app.include_router(send_router)
 app.include_router(doc_router)
+
+try:
+    socket.create_connection(("smtp.gmail.com", 587), timeout=10)
+    print("SMTP reachable")
+except Exception as e:
+    print(e)
     
 if __name__ == "__main__":
     import uvicorn
