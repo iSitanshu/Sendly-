@@ -1,18 +1,33 @@
-import re
+import smtplib
 
 def verify_credentials(email, password):
     
-    pattern = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
+    if "@" not in email or not email.endswith(".com"):
+        return {
+            "status": "invalid",
+            "message": "Invalid email format"
+        }
 
-    if re.match(pattern, email):
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
+
+        server.starttls()
+
+        server.login(email, password) 
+
+        server.quit()
+
         return {
             "status": "success",
-            "message": "Valid email format",
+            "message": "Credentials verified",
             "email": email,
             "credential": password
         }
 
-    return {
-        "status": "invalid",
-        "message": "Invalid email format"
-    }
+    except Exception as e:
+        print("SMTP ERROR:", str(e))
+
+        return {
+            "status": "false",
+            "message": str(e)   # show actual error
+        }
