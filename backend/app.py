@@ -11,7 +11,6 @@ from routes.auth import router as auth_router
 from routes.content import router as content_router
 from routes.attach import router as attach_router
 from routes.send import router as send_router
-from routes.doc import router as doc_router
 
 app = FastAPI()
 
