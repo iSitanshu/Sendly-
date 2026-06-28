@@ -3,10 +3,10 @@ import {
   Mail,
   ArrowLeft,
 } from "lucide-react";
-import Credientail_Section from "../../components/Credentail_Section/CredientailSection";
-import Subject_Body from "../../components/Subject_Body/SubjectBody";
+import CredientailSection from "../../components/Credentail_Section/CredientailSection";
+import SubjectBody from "../../components/Subject_Body/SubjectBody";
 import Attachments from "../../components/Attachment/Attachment";
-import Send_Mail from "../../components/Send_Mail/SendMail";
+import SendMail from "../../components/Send_Mail/SendMail";
 
 function Compose() {
 
@@ -33,13 +33,13 @@ function Compose() {
 
         <h1 className="text-3xl font-bold mb-6">New Campaign</h1>
 
-        <Credientail_Section />
+        <CredientailSection />
 
-        <Subject_Body />
+        <SubjectBody />
         
         <Attachments />
         
-        <Send_Mail />
+        <SendMail />
       </main>
     </div>
   );
