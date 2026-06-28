@@ -9,7 +9,7 @@ class EmailRequest(BaseModel):
 
 
 @router.post("/auth")
-def auth(data: EmailRequest):
+def verify_credentials(data: EmailRequest):
     pattern = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
 
     if re.match(pattern, data.email):
