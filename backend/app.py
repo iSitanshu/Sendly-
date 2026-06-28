@@ -10,6 +10,7 @@ from routes.auth import router as auth_router
 from routes.content import router as content_router
 from routes.attach import router as attach_router
 from routes.send import router as send_router
+from routes.doc import router as doc_router
 
 app = FastAPI()
 
@@ -28,6 +29,7 @@ app.include_router(auth_router)
 app.include_router(content_router)
 app.include_router(attach_router)
 app.include_router(send_router)
+app.include_router(doc_router)
     
 if __name__ == "__main__":
     import uvicorn
