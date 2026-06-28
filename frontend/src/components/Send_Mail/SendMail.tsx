@@ -26,6 +26,44 @@ const Send_Mail = () => {
     (emailContent?.subject || "").trim() &&
     (emailContent?.body || "").trim();
 
+  // ---------------- VALIDATION FUNCTION ----------------
+  const validatePlaceholders = () => {
+    
+    // placeholders extracted from subject/body
+    const templatePlaceholders = placeholdersStore.map(
+      (item: string) => item.toLowerCase().trim()
+    );
+
+    // keys from uploaded csv/excel file
+    const fileColumns =
+      recipientsList.length > 0
+        ? Object.keys(recipientsList[0]).map((key) =>
+            key.toLowerCase().trim()
+          )
+        : [];
+
+    // fields present in template but missing in file
+    const missingFields = templatePlaceholders.filter(
+      (field: string) => !fileColumns.includes(field)
+    );
+
+    // fields present in file but not in template
+    const extraFields = fileColumns.filter(
+      (field: string) => !templatePlaceholders.includes(field)
+    );
+
+    const isValid =
+      missingFields.length === 0 &&
+      extraFields.length === 0;
+
+    return {
+      isValid,
+      missingFields,
+      extraFields,
+    };
+  };
+
+  // ---------------- SEND FUNCTION ----------------
   const handleSend = async () => {
 
     if (!isFormComplete) {
@@ -33,13 +71,34 @@ const Send_Mail = () => {
       return;
     }
 
+    // check placeholders match
+    const validation = validatePlaceholders();
+
+    if (!validation.isValid) {
+
+      let errorMessage = "Placeholder mismatch detected\n\n";
+
+      if (validation.missingFields.length > 0) {
+        errorMessage += `Missing in uploaded file:\n${validation.missingFields.join(
+          ", "
+        )}\n\n`;
+      }
+
+      if (validation.extraFields.length > 0) {
+        errorMessage += `Extra columns in uploaded file:\n${validation.extraFields.join(
+          ", "
+        )}`;
+      }
+
+      alert(errorMessage);
+      return;
+    }
+
     setLoading(true);
 
     try {
-
       const formData = new FormData();
 
-      // Convert objects to JSON strings
       formData.append(
         "emailCredentials",
         JSON.stringify(emailCredentials)
@@ -60,15 +119,10 @@ const Send_Mail = () => {
         JSON.stringify(emailContent)
       );
 
-      // optional attachments
+      // attachments
       if (selectedFiles.length > 0) {
-
         selectedFiles.forEach((file) => {
-
-          formData.append(
-            "attachments",
-            file
-          );
+          formData.append("attachments", file);
         });
       }
 
@@ -77,27 +131,22 @@ const Send_Mail = () => {
         formData
       );
 
-      console.log(response)
+      console.log(response);
 
-      setResults(
-        response.data.results
-      );
+      setResults(response.data.results);
 
     } catch (error: any) {
 
-      console.log(
-        error.response?.data
-      );
-
+      console.log(error.response?.data);
       alert("Mail sending failed");
-    }
 
-    finally {
+    } finally {
 
       setLoading(false);
     }
   };
 
+  // ---------------- FILE UPLOAD ----------------
   const handleFileUpload = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -110,15 +159,25 @@ const Send_Mail = () => {
 
     const updatedFiles = [
       ...selectedFiles,
-      ...files
+      ...files,
     ];
 
-    console.log(updatedFiles)
-
     setSelectedFiles(updatedFiles);
+
+    dispatch(
+      setAttachments(
+        updatedFiles.map((file) => ({
+          name: file.name,
+          size: file.size,
+          type: file.type,
+        }))
+      )
+    );
   };
 
+  // ---------------- REMOVE FILE ----------------
   const handleRemoveFile = (index: number) => {
+
     const updatedFiles = selectedFiles.filter(
       (_, i) => i !== index
     );
@@ -161,8 +220,8 @@ const Send_Mail = () => {
                   className="flex justify-between items-center
                     bg-slate-800 p-2 rounded border border-slate-700"
                 >
-
                   <div>
+
                     <p className="text-sm text-green-400">
                       {file.name}
                     </p>
@@ -170,6 +229,7 @@ const Send_Mail = () => {
                     <p className="text-xs text-slate-400">
                       {(file.size / 1024).toFixed(2)} KB
                     </p>
+
                   </div>
 
                   <button
@@ -207,7 +267,6 @@ const Send_Mail = () => {
             key={index}
             className="border p-2 mb-2 rounded"
           >
-
             <p>Email: {item.email}</p>
 
             <p>

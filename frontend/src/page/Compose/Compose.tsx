@@ -6,12 +6,10 @@ import {
   Plus,
   X,
 } from "lucide-react";
-import Credientail_Section from "../../components/Credentail_Section/Credientail_Section";
-import Subject_Body from "../../components/Subject_Body/Subject_Body";
-import Key_Value from "../../components/Key_Value.tsx/Key_Value";
+import Credientail_Section from "../../components/Credentail_Section/CredientailSection";
+import Subject_Body from "../../components/Subject_Body/SubjectBody";
 import Attachments from "../../components/Attachment/Attachment";
-import Recepient from "../../components/Recepient/Recepient";
-import Send_Mail from "../../components/Send_Mail/Send_Mail";
+import Send_Mail from "../../components/Send_Mail/SendMail";
 
 type Attachment = {
   name: string;
@@ -24,11 +22,9 @@ type DynField = {
 };
 
 function Compose() {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [from, setFrom] = useState("");
   const [fromName, setFromName] = useState("");
   const [replyTo, setReplyTo] = useState("");
-  const [recipientInput, setRecipientInput] = useState("");
   const [recipients, setRecipients] = useState<string[]>([]);
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -36,7 +32,6 @@ function Compose() {
     { key: "", value: "" },
   ]);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
-  const [copied, setCopied] = useState(false);
 
   const payload = useMemo(() => {
     const variables: Record<string, string> = {};

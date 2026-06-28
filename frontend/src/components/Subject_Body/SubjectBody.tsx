@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   setPlaceholdersStore,
-  setEmailContent,
-  setAttachments,
-  removeAttachment,
+  setEmailContent
 } from "../../store/EmailSlice";
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -15,7 +13,6 @@ const Subject_Body = () => {
   const [body, setBody] = useState("");
   const [message, setMessage] = useState("");
   const [placeholders, setPlaceholders] = useState<string[]>([]);
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleCheckContent = async () => {
     try {
