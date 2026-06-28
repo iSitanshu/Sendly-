@@ -29,39 +29,40 @@ const Send_Mail = () => {
   // ---------------- VALIDATION FUNCTION ----------------
   const validatePlaceholders = () => {
     
-    // placeholders extracted from subject/body
-    const templatePlaceholders = placeholdersStore.map(
-      (item: string) => item.toLowerCase().trim()
-    );
+  // placeholders extracted from subject/body → lowercase
+  const templatePlaceholders = placeholdersStore.map(
+    (item: string) => item.toLowerCase().trim()
+  );
 
-    // keys from uploaded csv/excel file
-    const fileColumns =
-      recipientsList.length > 0
-        ? Object.keys(recipientsList[0]).map((key) =>
-            key.toLowerCase().trim()
-          )
-        : [];
+  // keys from uploaded csv/excel file → lowercase
+  // remove "email" because it is used separately for recipient
+  const fileColumns =
+    recipientsList.length > 0
+      ? Object.keys(recipientsList[0])
+          .map((key) => key.toLowerCase().trim())
+          .filter((key) => key !== "email")   // ignore email column
+      : [];
 
-    // fields present in template but missing in file
-    const missingFields = templatePlaceholders.filter(
-      (field: string) => !fileColumns.includes(field)
-    );
+  // fields present in template but missing in file
+  const missingFields = templatePlaceholders.filter(
+    (field: string) => !fileColumns.includes(field)
+  );
 
-    // fields present in file but not in template
-    const extraFields = fileColumns.filter(
-      (field: string) => !templatePlaceholders.includes(field)
-    );
+  // fields present in file but not in template
+  const extraFields = fileColumns.filter(
+    (field: string) => !templatePlaceholders.includes(field)
+  );
 
-    const isValid =
-      missingFields.length === 0 &&
-      extraFields.length === 0;
+  const isValid =
+    missingFields.length === 0 &&
+    extraFields.length === 0;
 
-    return {
-      isValid,
-      missingFields,
-      extraFields,
-    };
+  return {
+    isValid,
+    missingFields,
+    extraFields,
   };
+};
 
   // ---------------- SEND FUNCTION ----------------
   const handleSend = async () => {
