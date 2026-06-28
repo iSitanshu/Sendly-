@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import {
   Mail,
   ArrowLeft,
-  Plus,
-  X,
 } from "lucide-react";
 import Credientail_Section from "../../components/Credentail_Section/CredientailSection";
 import Subject_Body from "../../components/Subject_Body/SubjectBody";
@@ -31,7 +29,6 @@ function Compose() {
   const [fields, setFields] = useState<DynField[]>([
     { key: "", value: "" },
   ]);
-  const [attachments, setAttachments] = useState<Attachment[]>([]);
 
   const payload = useMemo(() => {
     const variables: Record<string, string> = {};
@@ -47,9 +44,8 @@ function Compose() {
       subject,
       body,
       variables,
-      attachments: attachments.map((a) => a.name),
     };
-  }, [fromName, from, replyTo, recipients, subject, body, fields, attachments]);
+  }, [fromName, from, replyTo, recipients, subject, body, fields]);
 
   return (
     <div className="min-h-screen bg-slate-950 text-white px-6 py-8">
@@ -82,20 +78,6 @@ function Compose() {
         
         <Send_Mail />
       </main>
-    </div>
-  );
-}
-
-function Field(props: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mb-4">
-      <label className="block text-sm text-slate-400 mb-2">
-        {props.label}
-      </label>
-      {props.children}
     </div>
   );
 }
@@ -144,5 +126,4 @@ export default Compose;
         </Section>
 
         <Key_Value /> */}
-
-        {/* <Recepient /> */}
+{/* <Recepient /> */}
