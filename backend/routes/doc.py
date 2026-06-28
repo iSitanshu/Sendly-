@@ -1,4 +1,7 @@
 import socket
+from fastapi import APIRouter
+
+router = APIRouter()
 
 try:
     socket.create_connection(("smtp.gmail.com", 587), timeout=10)
