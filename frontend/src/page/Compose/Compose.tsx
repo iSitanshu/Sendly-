@@ -1,4 +1,3 @@
-import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Mail,
@@ -9,43 +8,7 @@ import Subject_Body from "../../components/Subject_Body/SubjectBody";
 import Attachments from "../../components/Attachment/Attachment";
 import Send_Mail from "../../components/Send_Mail/SendMail";
 
-type Attachment = {
-  name: string;
-  size: number;
-};
-
-type DynField = {
-  key: string;
-  value: string;
-};
-
 function Compose() {
-  const [from, setFrom] = useState("");
-  const [fromName, setFromName] = useState("");
-  const [replyTo, setReplyTo] = useState("");
-  const [recipients, setRecipients] = useState<string[]>([]);
-  const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("");
-  const [fields, setFields] = useState<DynField[]>([
-    { key: "", value: "" },
-  ]);
-
-  const payload = useMemo(() => {
-    const variables: Record<string, string> = {};
-
-    fields.forEach((f) => {
-      if (f.key.trim() !== "") variables[f.key] = f.value;
-    });
-
-    return {
-      from: { name: fromName, email: from },
-      replyTo,
-      recipients,
-      subject,
-      body,
-      variables,
-    };
-  }, [fromName, from, replyTo, recipients, subject, body, fields]);
 
   return (
     <div className="min-h-screen bg-slate-950 text-white px-6 py-8">
