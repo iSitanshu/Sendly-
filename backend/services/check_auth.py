@@ -9,7 +9,7 @@ def verify_credentials(email, password):
         }
 
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 465, timeout=5)
+        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=5)
 
         server.starttls()
 
